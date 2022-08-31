@@ -29,6 +29,7 @@ class ClippingsParser():
 
     def __init__(self, my_clippings_file):
         self.__check_file(my_clippings_file)
+        
         self.__my_clippings_file = my_clippings_file
         self.clips = []
 
