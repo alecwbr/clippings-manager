@@ -18,7 +18,7 @@ class ParsedClip:
     highlight: str
 
 class ClippingsParser():
-    clips: List[ParsedClip]
+    parsed_clips: List[ParsedClip]
 
     def __init__(self, my_clippings_file):
         self.__my_clippings_file = my_clippings_file
