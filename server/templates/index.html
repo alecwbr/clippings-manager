@@ -1,0 +1,16 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Clippings Manager</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"> 
+    </head>
+{% for author in authors %}
+    <h1><a href="{{ url_for('author', name=author.name) }}">{{ author.name }}</a></h1>
+    {% for clip in author.clips %}
+        <h5>{{ clip.title }}</h5>
+        <p>{{ clip.highlight }}</p>
+    {% endfor %}
+{% endfor %}
+</html>
