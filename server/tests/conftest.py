@@ -18,12 +18,33 @@ Test Book Two (Fake Author Two)
 ==========
 '''
 
-@pytest.fixture()
-def app():
+BAD_MOCK_FILE_CONTENT = '''Test data
+Test data
+Test
+Test
+Test
+Test
+Test
+Test
+Test
+'''
+
+@pytest.fixture
+def mock_file_handle():
+    handle = mock.patch('builtins.open', mock.mock_open(read_data=MOCK_FILE_CONTENT))
+    yield handle
+
+@pytest.fixture
+def bad_mock_file_handle():
+    handle = mock.patch('builtins.open', mock.mock_open(read_data=BAD_MOCK_FILE_CONTENT))
+    yield handle
+
+@pytest.fixture
+def app(mock_file_handle):
     app = create_app('testing')
     with app.app_context():
-        with mock.patch("builtins.open", mock.mock_open(read_data=MOCK_FILE_CONTENT)) as mock_file:
-            parser = ClippingsParser(mock_file)
+        with mock_file_handle:
+            parser = ClippingsParser(mock_file_handle)
             clips = parser.get_clips()
         db.drop_all()
         db.create_all()
@@ -35,12 +56,6 @@ def app():
             if author is None:
                 author = Author(name=clip.author)
 
-                # OR this, which is more verbose and readable:
-                #
-                # author = Author(name=clip.author.name)
-                # clip.author = None
-                # author.clips.append(clip)
-                # db.session.add(author)
             if book is None:
                 book = Book(name=clip.book_title)
 
@@ -52,10 +67,10 @@ def app():
         db.session.commit()
     yield app
 
-@pytest.fixture()
+@pytest.fixture
 def client(app):
     return app.test_client()
 
-@pytest.fixture()
+@pytest.fixture
 def runner(app):
     return app.test_cli_runner()
