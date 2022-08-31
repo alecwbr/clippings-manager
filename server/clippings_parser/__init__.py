@@ -8,6 +8,7 @@ from typing import List
 class ParsingError(Exception):
     pass
 
+@dataclass
 class ParsedClip:
     book_title: str
     author: str
@@ -15,14 +16,6 @@ class ParsedClip:
     date: datetime
     location: str
     highlight: str
-
-    def __init__(self, book_title, author, clip_type, date, location, highlight):
-        self.book_title = book_title
-        self.author = author
-        self.clip_type = clip_type
-        self.date = date
-        self.location = location
-        self.highlight = highlight
 
 class ClippingsParser():
     clips: List[ParsedClip]
