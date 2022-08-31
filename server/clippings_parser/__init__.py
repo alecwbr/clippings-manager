@@ -29,17 +29,7 @@ class ClippingsParser():
 
     def __init__(self, my_clippings_file):
         self.__my_clippings_file = my_clippings_file
-        self.__check_file(self.__my_clippings_file)
-        
         self.clips = []
-
-    def __check_file(self, clipping_file):
-        with open(clipping_file) as f:
-            for i, line in enumerate(f, 1):
-                if i % 5 == 0:
-                    if not line.startswith('=========='):
-                        raise ParsingError('Not a valid Clippings file')
-
 
     def __parse_clip_title(self, clip):
         self.__clean_title_author = clip[0].lstrip("\ufeff").rstrip()
@@ -81,10 +71,17 @@ class ClippingsParser():
 
     def get_clips(self) -> List[ParsedClip]:
         book_clips = []
+        
         with open(self.__my_clippings_file) as f:
+            for i, line in enumerate(f, 1):
+                if i % 5 == 0:
+                    if not line.startswith('=========='):
+                        raise ParsingError('Not a valid Clippings file')
+
             for key, group in itertools.groupby(f, lambda line: line.startswith('==========')):
                 if not key:
                     book_clips.append(list(group))
+
         for clip in book_clips:
             title = self.__parse_clip_title(clip)
             author = self.__parse_clip_author(clip)
