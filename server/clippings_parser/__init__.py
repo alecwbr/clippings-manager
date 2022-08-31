@@ -77,7 +77,8 @@ class ClippingsParser():
                 if i % 5 == 0:
                     if not line.startswith('=========='):
                         raise ParsingError('Not a valid Clippings file')
-
+                        
+        with open(self.__my_clippings_file) as f:
             for key, group in itertools.groupby(f, lambda line: line.startswith('==========')):
                 if not key:
                     book_clips.append(list(group))
