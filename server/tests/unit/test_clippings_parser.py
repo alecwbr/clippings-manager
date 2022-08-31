@@ -2,7 +2,8 @@ import os
 from datetime import datetime
 from app import db
 from unittest import mock
-from clippings_parser import ClippingsParser
+import pytest
+from clippings_parser import ClippingsParser, ParsingError
 
 MOCK_FILE_CONTENTS = '''\ufeffTest Book (Fake Author)
 - Your Highlight on Location 1337 | Added on Saturday, August 20, 2022 2:05:00 AM
@@ -14,6 +15,17 @@ Test Book Two (Fake Author)
 
 
 ==========
+'''
+
+BAD_MOCK_FILE_CONTENTS = '''Test data
+Test data
+Test
+Test
+Test
+Test
+Test
+Test
+Test
 '''
 
 def test_clippings_parser():
@@ -28,5 +40,8 @@ def test_clippings_parser():
         assert clips[0].date == datetime(2022, 8, 20, 2, 5)
         assert clips[0].highlight == 'This is a test highlight'
 
-
-        
+def test_clippings_parser_parsing_error():
+    with mock.patch('builtins.open', mock.mock_open(read_data=BAD_MOCK_FILE_CONTENTS)) as mock_file:
+        parser = ClippingsParser(mock_file)
+        with pytest.raises(ParsingError):
+            parser.get_clips()
