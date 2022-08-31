@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from app.models import Clip
 from typing import List
 
+class ParsingError(Exception):
+    pass
+
 class ParsedClip:
     book_title: str
     author: str
