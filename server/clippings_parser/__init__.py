@@ -29,7 +29,7 @@ class ClippingsParser():
 
     def __init__(self, my_clippings_file):
         self.__my_clippings_file = my_clippings_file
-        self.clips = []
+        self.parsed_clips = []
 
     def __parse_clip_title(self, clip):
         self.__clean_title_author = clip[0].lstrip("\ufeff").rstrip()
@@ -77,7 +77,7 @@ class ClippingsParser():
                 if i % 5 == 0:
                     if not line.startswith('=========='):
                         raise ParsingError('Not a valid Clippings file')
-                        
+
         with open(self.__my_clippings_file) as f:
             for key, group in itertools.groupby(f, lambda line: line.startswith('==========')):
                 if not key:
@@ -92,6 +92,6 @@ class ClippingsParser():
             highlight = self.__parse_clip_highlight(clip)
 
             parsed_clip = ParsedClip(book_title=title, author=author, clip_type=clip_type, date=date, location=location, highlight=highlight)
-            self.clips.append(parsed_clip)
+            self.parsed_clips.append(parsed_clip)
         
-        return self.clips
+        return self.parsed_clips
