@@ -19,8 +19,11 @@ function handleDeleteClipButton(clipId) {
 }
 
 function formatAuthor(author) {
-    let splitName = author.split(',')
-    return `${splitName[1]} ${splitName[0]}`
+    if (author.includes(',')) {
+        let splitName = author.split(',')
+        return `${splitName[1]} ${splitName[0]}`
+    }
+    return author
 }
 </script>
 
