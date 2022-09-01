@@ -1,8 +1,6 @@
 import pytest
-import re
 from app import create_app, db
 from unittest import mock
-from config import config
 from clippings_parser import ClippingsParser
 from app.models import Author, Clip, Book
 
