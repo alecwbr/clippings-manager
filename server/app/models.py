@@ -7,11 +7,7 @@ clip_tag = db.Table('clip_tag',
                     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
                     )
 
-# Here we use dataclass to magically convert each model to a dict
-# to make converting their data to json work automatically
-# alternatively, I implemented to_json methods that worked
-# the same way, but this is way cleaner.
-@dataclass()
+@dataclass
 class Tag(db.Model):
     id: int
     name: str
@@ -23,7 +19,7 @@ class Tag(db.Model):
         return f'<Tag "{self.name}">'
 
 
-@dataclass()
+@dataclass
 class Clip(db.Model):
     id: int
     clip_type: str
@@ -59,7 +55,7 @@ class Clip(db.Model):
     def __repr__(self):
         return f'<Clip "{self.title}">'
 
-@dataclass()
+@dataclass
 class Book(db.Model):
     id: int
     name: str
@@ -71,7 +67,7 @@ class Book(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     clips = db.relationship('Clip', backref='book')
 
-@dataclass()
+@dataclass
 class Author(db.Model):
     id: int
     name: str
