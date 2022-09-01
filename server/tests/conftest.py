@@ -14,6 +14,11 @@ Test Book Two (Fake Author Two)
 
 
 ==========
+Test Book Three (Fake Author)
+- Your Highlight on Location 100 | Added on Thursday, September 1, 2022 9:00:00 AM
+
+This is a test highlight
+==========
 '''
 
 BAD_MOCK_FILE_CONTENT = '''Test data

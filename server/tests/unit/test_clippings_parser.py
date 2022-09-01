@@ -20,7 +20,7 @@ def test_clippings_parser_is_correct_size(mock_file_handle):
     with mock_file_handle:
         parser = ClippingsParser(mock_file_handle)
         clips = parser.get_clips()
-        assert len(clips) == 2
+        assert len(clips) == 3
 
 def test_clippings_parser_book_title(mock_file_handle):
     with mock_file_handle:

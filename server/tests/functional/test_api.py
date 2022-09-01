@@ -1,3 +1,5 @@
+from app import db
+from flask import jsonify
 from app.models import Author, Clip
 
 def test_api_get_all_clips(client):
