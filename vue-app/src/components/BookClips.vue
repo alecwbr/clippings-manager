@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 const props = defineProps({
-    book: {
+    activeBook: {
         type: Object,
         required: true
     }
@@ -28,15 +28,15 @@ function formatAuthor(author) {
 </script>
 
 <template>
-    <div v-if="props.book.book !== null" class="wrapper">
-        <h2>{{ props.book.book.name }}</h2>
-        <div class="clip-wrapper" v-for="clip in props.book.book.clips" :key="clip.id">
+    <div v-if="props.activeBook.book !== null" class="wrapper">
+        <h2>{{ props.activeBook.book.name }}</h2>
+        <div class="clip-wrapper" v-for="clip in props.activeBook.book.clips" :key="clip.id">
             <div><span>location: {{ clip.location }}</span></div>
             <div><span>date: {{ formatDate(clip.date) }}</span></div>
             <div><span>type: {{ clip.clip_type }}</span></div>
             <br />
             <div>&quot;{{ clip.highlight }}&quot;</div>
-            <div>- {{ formatAuthor(props.book.author) }}</div>
+            <div>- {{ formatAuthor(props.activeBook.author) }}</div>
             <button>tag</button>
             <button @click="handleDeleteClipButton(clip.id)">delete</button>
         </div>

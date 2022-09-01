@@ -36,7 +36,7 @@ onMounted(async () => {
       ></AuthorList>
     </div>
     <div class="clips">
-      <BookClips :book="state.activeBook"
+      <BookClips :active-book="state.activeBook"
             @delete-clip="deleteClip">
       </BookClips>
     </div>
