@@ -1,6 +1,6 @@
 from . import api
 from .. import db
-from ..models import Author, Book
+from ..models import Author, Book, Clip
 from flask import jsonify, request
 
 @api.route('/authors', methods=['GET'])
@@ -35,7 +35,12 @@ def get_author_clip(author_id, clip_id):
 
 @api.route('/authors/<int:author_id>/clips/<int:clip_id>', methods=['DELETE'])
 def delete_author_clip(author_id, clip_id):
-    pass
+    clip = Clip.query.get(clip_id)
+    if clip.author.id != author_id:
+        return jsonify({'error': 'not found'})
+    db.session.delete(clip)
+    db.session.commit()
+    return jsonify(clip)
 
 ##########
 # author books
