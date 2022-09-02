@@ -53,6 +53,16 @@ def test_api_get_author_response_json(client):
             ]
         }
 
+def test_api_delete_author_returns_author(client):
+    with client:
+        response = client.delete('/api/authors/1')
+        assert response.json == {
+            'id': 1,
+            'author': 'Fake Author',
+            'books_num': 2,
+            'clips_num': 2
+        }
+
 def test_api_delete_author_clip_returns_deleted_clip_if_successful(client):
     with client:
         response = client.delete('/api/authors/1/clips/1')

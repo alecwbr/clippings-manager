@@ -16,10 +16,18 @@ def get_author(id):
 @api.route('/authors/<int:id>', methods=['DELETE'])
 def delete_author(id):
     author = Author.query.get(id)
+    clips_num = len(author.clips)
+    books_num = len(author.books)
+    author.clips.clear()
+    author.books.clear()
     db.session.delete(author)
-    db.session.delete(author.clips)
     db.session.commit()
-    return jsonify(author)
+    return jsonify({
+        'id': author.id,
+        'author': author.name,
+        'clips_num': clips_num,
+        'books_num': books_num
+        })
 
 ##########
 # author clips
