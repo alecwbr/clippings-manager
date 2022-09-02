@@ -37,7 +37,7 @@ class Clip(db.Model):
     highlight = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    tags = db.relationship('Tag', secondary=clip_tag, backref='clips')
+    tags = db.relationship('Tag', secondary=clip_tag, cascade='all, delete', backref='clips')
 
     def date_to_string(self):
         return datetime.strftime(self.date, '%A, %B %d, %Y %I:%M:%S %p')
@@ -65,7 +65,7 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
-    clips = db.relationship('Clip', backref='book')
+    clips = db.relationship('Clip', cascade='all, delete-orphan', backref='book')
 
 @dataclass
 class Author(db.Model):
@@ -75,8 +75,8 @@ class Author(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    books = db.relationship('Book', backref='author')
-    clips = db.relationship('Clip', backref='author')
+    books = db.relationship('Book', cascade='all, delete-orphan', backref='author')
+    clips = db.relationship('Clip', cascade='all, delete-orphan', backref='author')
 
     def to_json_with_clips_field(self):
         clips_arr = []
