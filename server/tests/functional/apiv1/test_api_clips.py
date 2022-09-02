@@ -1,22 +1,22 @@
 def test_api_get_clips_response_json_is_not_none(client):
     with client:
-        response = client.get('/api/clips')
+        response = client.get('/api/v1/clips')
         assert response.status_code == 200
         assert response.json is not None
 
 def test_api_get_clips_response_json_is_correct_length(client):
     with client:
-        response = client.get('/api/clips')
+        response = client.get('/api/v1/clips')
         assert len(response.json) == 3
 
 def test_api_get_clip_response_json_is_not_none(client):
     with client:
-        response = client.get('/api/clips/1')
+        response = client.get('/api/v1/clips/1')
         assert response.json is not None
 
 def test_api_get_clip_response_json(client):
     with client:
-        response = client.get('/api/clips/1')
+        response = client.get('/api/v1/clips/1')
         assert response.json == {
             'id': 1,
             'author': 'Fake Author',

@@ -1,17 +1,17 @@
 def test_api_get_authors_response_json_is_not_none(client):
     with client:
-        response = client.get('/api/authors')
+        response = client.get('/api/v1/authors')
         assert response.status_code == 200
         assert response.json is not None
 
 def test_api_get_authors_response_json_is_correct_length(client):
     with client:
-        response = client.get('/api/authors')
+        response = client.get('/api/v1/authors')
         assert len(response.json) == 2
 
 def test_api_get_author_response_json(client):
     with client:
-        response = client.get('/api/authors/1')
+        response = client.get('/api/v1/authors/1')
         assert response.json == {
             'id': 1,
             'name': 'Fake Author',
@@ -55,7 +55,7 @@ def test_api_get_author_response_json(client):
 
 def test_api_delete_author_returns_author(client):
     with client:
-        response = client.delete('/api/authors/1')
+        response = client.delete('/api/v1/authors/1')
         assert response.json == {
             'id': 1,
             'author': 'Fake Author',
@@ -65,17 +65,17 @@ def test_api_delete_author_returns_author(client):
 
 def test_api_delete_author_clip_returns_deleted_clip_if_successful(client):
     with client:
-        response = client.delete('/api/authors/1/clips/1')
+        response = client.delete('/api/v1/authors/1/clips/1')
         assert response.json['id'] == 1
 
 def test_api_delete_author_clip_returns_error_if_author_id_and_clip_id_not_valid(client):
     with client:
-        response = client.delete('/api/authors/2/clips/1')
+        response = client.delete('/api/v1/authors/2/clips/1')
         assert response.json['error'] == 'not found'
 
 def test_api_get_author_books_returns_correct_json(client):
     with client:
-        response = client.get('/api/authors/1/books')
+        response = client.get('/api/v1/authors/1/books')
         assert response.json == {
             'id': 1,
             'name': 'Fake Author',
