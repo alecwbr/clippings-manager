@@ -60,4 +60,11 @@ def get_author_book(author_id, book_id):
 @api.route('/authors/<int:author_id>/books', methods=['GET'])
 def get_author_books(author_id):
     author = Author.query.get(author_id)
-    return jsonify(author.to_json_with_books_field())
+    return jsonify({
+        'id': author.id,
+        'name': author.name,
+        'books': [
+            {'id': book.id, 
+            'name': book.name}
+            for book in author.books]
+    })

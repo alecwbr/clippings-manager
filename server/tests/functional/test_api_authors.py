@@ -72,3 +72,21 @@ def test_api_delete_author_clip_returns_error_if_author_id_and_clip_id_not_valid
     with client:
         response = client.delete('/api/authors/2/clips/1')
         assert response.json['error'] == 'not found'
+
+def test_api_get_author_books_returns_correct_json(client):
+    with client:
+        response = client.get('/api/authors/1/books')
+        assert response.json == {
+            'id': 1,
+            'name': 'Fake Author',
+            'books': [
+                {
+                    'id': 1,
+                    'name': 'Test Book'
+                },
+                {
+                    'id': 3,
+                    'name': 'Test Book Three'
+                }
+            ]
+        }
