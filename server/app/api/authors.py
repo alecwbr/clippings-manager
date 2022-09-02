@@ -18,8 +18,7 @@ def delete_author(id):
     author = Author.query.get(id)
     clips_num = len(author.clips)
     books_num = len(author.books)
-    author.clips.clear()
-    author.books.clear()
+    
     db.session.delete(author)
     db.session.commit()
     return jsonify({
