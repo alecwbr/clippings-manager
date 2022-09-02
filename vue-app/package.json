@@ -6,7 +6,8 @@
     "start-api": "cd ../server && venv/bin/flask run --no-debugger",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "test:unit": "vitest --environment jsdom"
+    "test:unit": "vitest --environment jsdom",
+    "test:pytest": "cd ../server && venv/bin/python -m pytest"
   },
   "dependencies": {
     "axios": "^0.27.2",
