@@ -96,8 +96,8 @@ class Author(db.Model):
         json_author = {
             '_links': {
                 'self': { 'href': url_for('apiv2.get_author', _external=True, author_id=self.id) },
-                'collections/books': { 'href': url_for('apiv2.get_books', _external=True, author_id=self.id) },
-                'collections/clips': { 'href': url_for('apiv2.get_clips', _external=True, author_id=self.id) }
+                'collections/books': { 'href': url_for('apiv2.get_author_books', _external=True, author_id=self.id) },
+                'collections/clips': { 'href': url_for('apiv2.get_author_clips', _external=True, author_id=self.id) }
             },
             'id': self.id,
             'name': self.name

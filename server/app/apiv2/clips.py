@@ -4,7 +4,7 @@ from ..models import Author
 from flask import jsonify, url_for
 
 @apiv2.route('/authors/<int:author_id>/clips')
-def get_clips(author_id):
+def get_author_clips(author_id):
     pass
 
 @apiv2.route('/books/<int:book_id>/clips')
