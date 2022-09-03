@@ -1,6 +1,7 @@
 from datetime import datetime
 from dataclasses import dataclass
 from app import db
+from flask import url_for
 
 clip_tag = db.Table('clip_tag',
                     db.Column('clip_id', db.Integer, db.ForeignKey('clip.id')),
@@ -67,6 +68,19 @@ class Book(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     clips = db.relationship('Clip', cascade='all, delete-orphan', backref='book')
 
+    def to_json(self):
+        json_book = {
+            '_links': {
+                'self': { 'href': url_for('apiv2.get_book', _external=True, author_id=self.author_id, book_id=self.id) },
+                'collections/clips': { 'href': url_for('apiv2.get_book_clips', _external=True, book_id=self.id) }
+            },
+            'id': self.id,
+            'name': self.name,
+            'author_id': self.author_id,
+            'author_name': self.author.name
+        }
+        return json_book
+
 @dataclass
 class Author(db.Model):
     id: int
@@ -77,6 +91,18 @@ class Author(db.Model):
     name = db.Column(db.String(50))
     books = db.relationship('Book', cascade='all, delete-orphan', backref='author')
     clips = db.relationship('Clip', cascade='all, delete-orphan', backref='author')
+
+    def to_json(self):
+        json_author = {
+            '_links': {
+                'self': { 'href': url_for('apiv2.get_author', _external=True, author_id=self.id) },
+                'collections/books': { 'href': url_for('apiv2.get_books', _external=True, author_id=self.id) },
+                'collections/clips': { 'href': url_for('apiv2.get_clips', _external=True, author_id=self.id) }
+            },
+            'id': self.id,
+            'name': self.name
+        }
+        return json_author
 
     def to_json_with_clips_field(self):
         clips_arr = []

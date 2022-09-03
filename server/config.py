@@ -3,6 +3,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    AUTHORS_PER_PAGE = 5
+    BOOKS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):

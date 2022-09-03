@@ -1,3 +1,5 @@
 from flask import Blueprint
 
-api = Blueprint('api', __name__)
+apiv2 = Blueprint('apiv2', __name__)
+
+from . import authors, books, clips

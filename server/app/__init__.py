@@ -13,4 +13,7 @@ def create_app(config_name):
     from app.apiv1 import api as apiv1_bp
     app.register_blueprint(apiv1_bp, url_prefix='/api/v1')
 
+    from app.apiv2 import apiv2 as apiv2_bp
+    app.register_blueprint(apiv2_bp, url_prefix='/api/v2')
+
     return app
