@@ -6,7 +6,8 @@ from flask import jsonify, url_for, request, current_app
 @apiv2.route('/books')
 def get_books():
     page = request.args.get('page', 1, type=int)
-    pagination = Book.query.paginate(page, per_page=current_app.config['BOOKS_PER_PAGE'], error_out=False)
+    pagination = Book.query.paginate(
+        page, per_page=current_app.config['BOOKS_PER_PAGE'], error_out=False)
     books = pagination.items
     prev_p  = url_for('.get_books', _external=True, page=page-1) if pagination.has_prev else None
     next_p = url_for('.get_books', _external=True, page=page+1) if pagination.has_next else None
@@ -32,7 +33,8 @@ def get_book(book_id):
 @apiv2.route('/authors/<int:author_id>/books')
 def get_author_books(author_id):
     page = request.args.get('page', 1, type=int)
-    pagination = Book.query.filter_by(author_id=author_id).paginate(page, per_page=current_app.config['BOOKS_PER_PAGE'], error_out=False)
+    pagination = Book.query.filter_by(author_id=author_id).paginate(
+        page, per_page=current_app.config['BOOKS_PER_PAGE'], error_out=False)
     books = pagination.items
     prev_p = None
     if pagination.has_prev:
