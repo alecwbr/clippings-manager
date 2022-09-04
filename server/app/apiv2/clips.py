@@ -19,7 +19,6 @@ def get_author_clips(author_id):
     return jsonify({
         '_links': {
             'self': { 'href': url_for('.get_author_clips', _external=True, author_id=author_id) },
-            'author': { 'href': url_for('.get_author', _external=True, author_id=author_id) },
             'prev': { 'href': prev_p },
             'next': { 'href': next_p }
         },

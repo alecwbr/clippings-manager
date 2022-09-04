@@ -4,7 +4,6 @@ def test_get_author_clips_returns_correct_json(client):
         assert response.json == {
             '_links': {
                 'self': { 'href': 'http://localhost/api/v2/authors/1/clips' },
-                'author': { 'href': 'http://localhost/api/v2/authors/1' },
                 'prev': { 'href': None },
                 'next': { 'href': None }
             },
@@ -13,6 +12,7 @@ def test_get_author_clips_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/clips/1' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'book': { 'href': 'http://localhost/api/v2/books/1' },
                         'collections/tags': { 'href': 'http://localhost/api/v2/clips/1/tags'}
                     },
@@ -29,6 +29,7 @@ def test_get_author_clips_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/clips/3' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'book': { 'href': 'http://localhost/api/v2/books/3' },
                         'collections/tags': { 'href': 'http://localhost/api/v2/clips/3/tags'}
                     },

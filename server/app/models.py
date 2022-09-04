@@ -57,6 +57,7 @@ class Clip(db.Model):
         json_clip = {
             '_links': {
                 'self': { 'href': url_for('apiv2.get_author_clip', _external=True, author_id=self.author_id, clip_id=self.id) },
+                'author': { 'href': url_for('apiv2.get_author', _external=True, author_id=self.author_id) },
                 'book': { 'href': url_for('apiv2.get_book', _external=True, book_id=self.book_id) },
                 'collections/tags': { 'href': url_for('apiv2.get_clip_tags', _external=True, clip_id=self.id) }
             },
