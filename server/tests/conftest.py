@@ -1,4 +1,7 @@
 import pytest
+import random
+import datetime
+from dataclasses import dataclass
 from app import create_app, db
 from unittest import mock
 from clippings_parser import ClippingsParser
@@ -31,6 +34,42 @@ Test
 Test
 Test
 '''
+
+@dataclass
+class FakerData:
+    title: str
+    author: str
+    clip_type: str
+    location: str
+    date_time: datetime.datetime
+    highlight: str
+
+@pytest.fixture
+def fake_data_list():
+    data = []
+    return data
+
+@pytest.fixture
+def faker_mock_file(faker, fake_data_list):
+    clip_types_list = ['Highlight', 'Bookmark', 'Note']
+    FAKER_FILE = ''
+    for _ in range(30):
+        author = faker.name()
+        title = faker.catch_phrase()
+        location = random.randint(1, 2000)
+        clip_type = random.choice(clip_types_list)
+        highlight = faker.paragraph(nb_sentences=3) if clip_type == 'Highlight' else ''
+        date_time = faker.date_time_this_decade().strftime('%A, %B %d, %Y %I:%M:%S %p')
+
+        fake_data = FakerData(author=author, title=title, location=location, clip_type=clip_type, highlight=highlight, date_time=date_time)
+
+        fake_data_list.append(fake_data)
+        FAKER_FILE += (f'{fake_data.title} ({fake_data.author})\n'
+                       f'- Your {fake_data.clip_type} on Location {fake_data.location} | Added on {fake_data.date_time}\n'
+                       f'\n'
+                       f'{fake_data.highlight}\n'
+                       f'==========\n')
+    return FAKER_FILE
 
 @pytest.fixture
 def mock_file_handle():

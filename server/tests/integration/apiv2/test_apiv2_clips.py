@@ -45,3 +45,6 @@ def test_get_author_clips_returns_correct_json(client):
                 }
             ]
         }
+
+def test_faker(faker_mock_file):
+    assert faker_mock_file == 'test'
