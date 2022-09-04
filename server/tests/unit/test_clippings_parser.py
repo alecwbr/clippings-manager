@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from app import db
 from unittest import mock
 import pytest
-from clippings_parser import ClippingsParser, ParsedClip, ParsingError
+from clippings_parser import ClippingsParser, ParsingError
 
 def test_clippings_parser_parsing_error(bad_mock_file_handle):
     with bad_mock_file_handle:
@@ -11,7 +11,7 @@ def test_clippings_parser_parsing_error(bad_mock_file_handle):
         with pytest.raises(ParsingError):
             parser.get_clips()
 
-def test_clippings_parser_get_clips_returns_type_ParsedClip(mock_file_handle):
+def test_clippings_parser_get_clips_is_not_none(mock_file_handle):
     with mock_file_handle:
         parser = ClippingsParser(mock_file_handle)
         assert parser.get_clips() is not None
