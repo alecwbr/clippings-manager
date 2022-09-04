@@ -8,12 +8,8 @@ def get_books():
     page = request.args.get('page', 1, type=int)
     pagination = Book.query.paginate(page, per_page=current_app.config['BOOKS_PER_PAGE'], error_out=False)
     books = pagination.items
-    prev_p = None
-    if pagination.has_prev:
-        prev_p = url_for('.get_books', _external=True, page=page-1)
-    next_p = None
-    if pagination.has_next:
-        next_p = url_for('.get_books', _external=True, page=page+1)
+    prev_p  = url_for('.get_books', _external=True, page=page-1) if pagination.has_prev else None
+    next_p = url_for('.get_books', _external=True, page=page+1) if pagination.has_next else None
     
     book_list = []
     for book in books:
