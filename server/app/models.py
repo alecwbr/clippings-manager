@@ -91,6 +91,7 @@ class Book(db.Model):
         json_book = {
             '_links': {
                 'self': { 'href': url_for('apiv2.get_author_book', _external=True, author_id=self.author_id, book_id=self.id) },
+                'author': { 'href': url_for('apiv2.get_author', _external=True, author_id=self.author_id) },
                 'collections/clips': { 'href': url_for('apiv2.get_book_clips', _external=True, book_id=self.id) }
             },
             'id': self.id,

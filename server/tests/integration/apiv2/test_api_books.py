@@ -4,7 +4,6 @@ def test_get_author_books_returns_correct_json(client):
         assert response.json == {
             '_links': {
                 'self': { 'href': 'http://localhost/api/v2/authors/1/books' },
-                'author': { 'href': 'http://localhost/api/v2/authors/1' },
                 'prev': { 'href': None },
                 'next': { 'href': None }
             },
@@ -13,6 +12,7 @@ def test_get_author_books_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/books/1' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'collections/clips': { 'href': 'http://localhost/api/v2/books/1/clips' }
                     },
                     'id': 1,
@@ -23,6 +23,7 @@ def test_get_author_books_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/books/3' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'collections/clips': { 'href': 'http://localhost/api/v2/books/3/clips' }
                     },
                     'id': 3,
@@ -39,6 +40,7 @@ def test_get_author_book_returns_correct_json(client):
         assert response.json == {
             '_links': {
                 'self': { 'href': 'http://localhost/api/v2/authors/1/books/1' },
+                'author': { 'href': 'http://localhost/api/v2/authors/1' },
                 'collections/clips': { 'href': 'http://localhost/api/v2/books/1/clips' }
             },
             'id': 1,
@@ -61,6 +63,7 @@ def test_get_books_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/books/1' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'collections/clips': { 'href': 'http://localhost/api/v2/books/1/clips' }
                     },
                     'id': 1,
@@ -71,6 +74,7 @@ def test_get_books_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/2/books/2' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/2' },
                         'collections/clips': { 'href': 'http://localhost/api/v2/books/2/clips' }
                     },
                     'id': 2,
@@ -81,6 +85,7 @@ def test_get_books_returns_correct_json(client):
                 {
                     '_links': {
                         'self': { 'href': 'http://localhost/api/v2/authors/1/books/3' },
+                        'author': { 'href': 'http://localhost/api/v2/authors/1' },
                         'collections/clips': { 'href': 'http://localhost/api/v2/books/3/clips' }
                     },
                     'id': 3,
