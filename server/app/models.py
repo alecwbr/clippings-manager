@@ -25,7 +25,7 @@ class Clip(db.Model):
     id: int
     clip_type: str
     location: str
-    date: str
+    date: datetime
     highlight: str
     author_id: int
     book_id: int
@@ -40,15 +40,16 @@ class Clip(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     tags = db.relationship('Tag', secondary=clip_tag, cascade='all, delete', backref='clips')
 
+    @property
     def date_to_string(self):
-        return datetime.strftime(self.date, '%A, %B %d, %Y %I:%M:%S %p')
+        return self.date.strftime('%A, %B %d, %Y %I:%M:%S %p')
 
     def to_json(self):
         json_clip = {
             'id': self.id,
             'clip_type': self.clip_type,
             'location': self.location,
-            'date': self.date_to_string(),
+            'date': self.date_to_string,
             'highlight': self.highlight
         }
         return json_clip
@@ -64,7 +65,7 @@ class Clip(db.Model):
             'id': self.id,
             'clip_type': self.clip_type,
             'location': self.location,
-            'date': self.date_to_string(),
+            'date': self.date_to_string,
             'highlight': self.highlight,
             'author_id': self.author.id,
             'author_name': self.author.name,
