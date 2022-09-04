@@ -2,7 +2,6 @@ import re
 import itertools
 from datetime import datetime, timezone
 from dataclasses import dataclass
-from app.models import Clip
 from typing import List
 
 class ParsingError(Exception):
