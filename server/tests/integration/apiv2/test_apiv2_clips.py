@@ -1,4 +1,4 @@
-def test_api_get_author_clips_returns_correct_json(client):
+def test_get_author_clips_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/authors/1/clips')
         assert response.json == {

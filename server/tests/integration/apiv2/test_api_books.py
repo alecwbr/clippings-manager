@@ -1,4 +1,4 @@
-def test_api_get_author_books_returns_correct_json(client):
+def test_get_author_books_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/authors/1/books')
         assert response.json == {
@@ -33,7 +33,7 @@ def test_api_get_author_books_returns_correct_json(client):
             ]
         }
 
-def test_api_get_author_book_returns_correct_json(client):
+def test_get_author_book_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/authors/1/books/1')
         assert response.json == {
@@ -47,7 +47,7 @@ def test_api_get_author_book_returns_correct_json(client):
             'author_name': 'Fake Author'
         }
 
-def test_api_get_books_returns_correct_json(client):
+def test_get_books_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/books')
         assert response.json == {

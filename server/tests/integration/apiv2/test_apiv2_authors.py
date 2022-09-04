@@ -1,4 +1,4 @@
-def test_api_get_author_returns_correct_json(client):
+def test_get_author_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/authors/1')
         assert response.json == {
@@ -11,7 +11,7 @@ def test_api_get_author_returns_correct_json(client):
             'name': 'Fake Author'
         }
 
-def test_api_get_authors_returns_correct_json(client):
+def test_get_authors_returns_correct_json(client):
     with client:
         response = client.get('/api/v2/authors')
         assert response.json == {
