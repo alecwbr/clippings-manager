@@ -5,6 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     AUTHORS_PER_PAGE = 5
     BOOKS_PER_PAGE = 5
+    CLIPS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):
@@ -19,6 +20,7 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    CLIPS_PER_PAGE = 2
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
         'sqlite://'

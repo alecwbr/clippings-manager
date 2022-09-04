@@ -53,6 +53,25 @@ class Clip(db.Model):
         }
         return json_clip
 
+    def to_json_by_author(self):
+        json_clip = {
+            '_links': {
+                'self': { 'href': url_for('apiv2.get_author_clip', _external=True, author_id=self.author_id, clip_id=self.id) },
+                'book': { 'href': url_for('apiv2.get_book', _external=True, book_id=self.book_id) },
+                'collections/tags': { 'href': url_for('apiv2.get_clip_tags', _external=True, clip_id=self.id) }
+            },
+            'id': self.id,
+            'clip_type': self.clip_type,
+            'location': self.location,
+            'date': self.date_to_string(),
+            'highlight': self.highlight,
+            'author_id': self.author.id,
+            'author_name': self.author.name,
+            'book_id': self.book.id,
+            'book_name': self.book.name
+        }
+        return json_clip
+
     def __repr__(self):
         return f'<Clip "{self.title}">'
 
@@ -71,7 +90,7 @@ class Book(db.Model):
     def to_json(self):
         json_book = {
             '_links': {
-                'self': { 'href': url_for('apiv2.get_book', _external=True, author_id=self.author_id, book_id=self.id) },
+                'self': { 'href': url_for('apiv2.get_author_book', _external=True, author_id=self.author_id, book_id=self.id) },
                 'collections/clips': { 'href': url_for('apiv2.get_book_clips', _external=True, book_id=self.id) }
             },
             'id': self.id,
