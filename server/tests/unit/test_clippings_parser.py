@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
 from unittest import mock
 import pytest
@@ -50,7 +50,7 @@ def test_clippings_parser_date(mock_file_handle):
     with mock_file_handle:
         parser = ClippingsParser(mock_file_handle)
         clips = parser.get_clips()
-        assert clips[0].date == datetime(2022, 8, 20, 2, 5)
+        assert clips[0].date == datetime(2022, 8, 20, 2, 5).astimezone()
 
 def test_clippings_parser_book_title(mock_file_handle):
     with mock_file_handle:

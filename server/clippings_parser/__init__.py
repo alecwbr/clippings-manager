@@ -1,6 +1,6 @@
 import re
 import itertools
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from app.models import Clip
 from typing import List
@@ -49,7 +49,8 @@ class ClippingsParser():
         clip_len = len(clip[1])
         added_on_index = clip[1].find(sub_str)
         date = clip[1][added_on_index + sub_str_len : clip_len].rstrip()
-        return datetime.strptime(date, '%A, %B %d, %Y %I:%M:%S %p')
+        dt = datetime.strptime(date, '%A, %B %d, %Y %I:%M:%S %p')
+        return dt.astimezone()
 
     def __parse_clip_location(self, clip):
         sub_str = 'Location '
