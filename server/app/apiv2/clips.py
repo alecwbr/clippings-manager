@@ -14,7 +14,7 @@ def get_author_clips(author_id):
     
     clip_list = []
     for clip in clips:
-        clip_list.append(clip.to_json_by_author())
+        clip_list.append(clip.to_json_v2())
 
     return jsonify({
         '_links': {

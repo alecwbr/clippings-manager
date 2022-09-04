@@ -53,7 +53,7 @@ class Clip(db.Model):
         }
         return json_clip
 
-    def to_json_by_author(self):
+    def to_json_v2(self):
         json_clip = {
             '_links': {
                 'self': { 'href': url_for('apiv2.get_author_clip', _external=True, author_id=self.author_id, clip_id=self.id) },
