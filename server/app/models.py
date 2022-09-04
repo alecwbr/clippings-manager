@@ -41,7 +41,7 @@ class Clip(db.Model):
     tags = db.relationship('Tag', secondary=clip_tag, cascade='all, delete', backref='clips')
 
     @property
-    def date_to_string(self):
+    def date_str(self):
         return self.date.strftime('%A, %B %d, %Y %I:%M:%S %p')
 
     def to_json(self):
@@ -49,7 +49,7 @@ class Clip(db.Model):
             'id': self.id,
             'clip_type': self.clip_type,
             'location': self.location,
-            'date': self.date_to_string,
+            'date': self.date_str,
             'highlight': self.highlight
         }
         return json_clip
@@ -65,7 +65,7 @@ class Clip(db.Model):
             'id': self.id,
             'clip_type': self.clip_type,
             'location': self.location,
-            'date': self.date_to_string,
+            'date': self.date_str,
             'highlight': self.highlight,
             'author_id': self.author.id,
             'author_name': self.author.name,
