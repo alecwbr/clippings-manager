@@ -18,7 +18,7 @@ def get_authors():
     
     return jsonify({
         '_links': {
-            'self': { 'href': url_for('.get_authors', _external=True) },
+            'self': { 'href': url_for('.get_authors', _external=True, page=page) },
             'prev': { 'href': prev_p },
             'next': { 'href': next_p } 
         },

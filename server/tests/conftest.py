@@ -45,53 +45,66 @@ class FakerData:
     highlight: str
 
 @pytest.fixture
-def fake_data_list():
+def fake_data_list(faker):
     data = []
-    return data
-
-@pytest.fixture
-def faker_mock_file(faker, fake_data_list):
+    AUTHORS_NUM = 10
+    BOOKS_NUM = 5
+    CLIPS_NUM = 5
     clip_types_list = ['Highlight', 'Bookmark', 'Note']
-    FAKER_FILE = ''
-    for _ in range(30):
-        author = faker.name()
-        title = faker.catch_phrase()
-        location = random.randint(1, 2000)
-        clip_type = random.choice(clip_types_list)
-        highlight = faker.paragraph(nb_sentences=3) if clip_type == 'Highlight' else ''
-        date_time = faker.date_time_this_decade().strftime('%A, %B %d, %Y %I:%M:%S %p')
+    
+    for i in range(AUTHORS_NUM):
+        author = faker.unique.name()
+        for x in range(BOOKS_NUM):
+            book_title = faker.unique.catch_phrase()
+            for j in range(CLIPS_NUM):
+                location_section = random.randint(1, 2000)
+                location = f'{location_section}-{location_section+123}' 
+                clip_type = random.choice(clip_types_list)
+                highlight = faker.paragraph(nb_sentences=3) if clip_type == 'Highlight' else ''
+                date_time = faker.date_time_this_decade().strftime('%A, %B %d, %Y %I:%M:%S %p')
+                fake_data = FakerData(author=author, title=book_title, location=location, clip_type=clip_type, highlight=highlight, date_time=date_time)
+                data.append(fake_data)
 
-        fake_data = FakerData(author=author, title=title, location=location, clip_type=clip_type, highlight=highlight, date_time=date_time)
-
-        fake_data_list.append(fake_data)
-        FAKER_FILE += (f'{fake_data.title} ({fake_data.author})\n'
-                       f'- Your {fake_data.clip_type} on Location {fake_data.location} | Added on {fake_data.date_time}\n'
-                       f'\n'
-                       f'{fake_data.highlight}\n'
-                       f'==========\n')
-    return FAKER_FILE
+    random.shuffle(data)
+    yield data
+    del data
 
 @pytest.fixture
-def mock_file_handle():
-    handle = mock.patch('builtins.open', mock.mock_open(read_data=MOCK_FILE_CONTENT))
-    yield handle
+def faker_mock_file(fake_data_list):
+    FAKER_FILE = ''
+
+    for data in fake_data_list:
+        FAKER_FILE += (f'{data.title} ({data.author})\n'
+                       f'- Your {data.clip_type} on Location {data.location} | Added on {data.date_time}\n'
+                       f'\n'
+                       f'{data.highlight}\n'
+                       f'==========\n')
+    yield FAKER_FILE
+    del FAKER_FILE
+
+@pytest.fixture
+def mock_file_handle(faker_mock_file):
+    with mock.patch('builtins.open', mock.mock_open(read_data=faker_mock_file)) as handle:
+        yield handle
 
 @pytest.fixture
 def bad_mock_file_handle():
-    handle = mock.patch('builtins.open', mock.mock_open(read_data=BAD_MOCK_FILE_CONTENT))
-    yield handle
+    with mock.patch('builtins.open', mock.mock_open(read_data=BAD_MOCK_FILE_CONTENT)) as handle:
+        yield handle
 
 @pytest.fixture
-def app(mock_file_handle):
+def parsed_clips(mock_file_handle):
+    parser = ClippingsParser(mock_file_handle)
+    return parser.get_clips()
+
+@pytest.fixture
+def app(parsed_clips):
     app = create_app('testing')
     with app.app_context():
-        with mock_file_handle:
-            parser = ClippingsParser(mock_file_handle)
-            clips = parser.get_clips()
         db.drop_all()
         db.create_all()
 
-        for clip in clips:
+        for clip in parsed_clips:
             new_clip = Clip(clip_type=clip.clip_type, location=clip.location, date=clip.date, highlight=clip.highlight) 
             author = Author.query.filter_by(name=clip.author).first()
             book = Book.query.filter_by(name=clip.book_title).first()

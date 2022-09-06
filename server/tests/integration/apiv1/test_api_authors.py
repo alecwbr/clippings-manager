@@ -7,7 +7,7 @@ def test_api_get_authors_response_json_is_not_none(client):
 def test_api_get_authors_response_json_is_correct_length(client):
     with client:
         response = client.get('/api/v1/authors')
-        assert len(response.json) == 2
+        assert len(response.json) == 10
 
 def test_api_get_author_response_json(client):
     with client:

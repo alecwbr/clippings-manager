@@ -20,6 +20,8 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    AUTHORS_PER_PAGE = 2
+    BOOKS_PER_PAGE = 2
     CLIPS_PER_PAGE = 2
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \

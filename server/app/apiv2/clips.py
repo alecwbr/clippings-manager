@@ -9,8 +9,8 @@ def get_author_clips(author_id):
     pagination = Clip.query.filter_by(author_id=author_id).paginate(
         page, per_page=current_app.config['CLIPS_PER_PAGE'], error_out=False)
     clips = pagination.items
-    prev_p = url_for('.get_author_clips', _external=True, page=page-1) if pagination.has_prev else None
-    next_p = url_for('.get_author_clips', _external=True, page=page+1) if pagination.has_next else None
+    prev_p = url_for('.get_author_clips', _external=True, author_id=author_id, page=page-1) if pagination.has_prev else None
+    next_p = url_for('.get_author_clips', _external=True, author_id=author_id, page=page+1) if pagination.has_next else None
     
     clip_list = []
     for clip in clips:
@@ -18,7 +18,7 @@ def get_author_clips(author_id):
 
     return jsonify({
         '_links': {
-            'self': { 'href': url_for('.get_author_clips', _external=True, author_id=author_id) },
+            'self': { 'href': url_for('.get_author_clips', _external=True, author_id=author_id, page=page) },
             'prev': { 'href': prev_p },
             'next': { 'href': next_p }
         },
