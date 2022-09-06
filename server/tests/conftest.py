@@ -47,7 +47,7 @@ class FakerData:
 @pytest.fixture
 def fake_data_list(faker):
     data = []
-    AUTHORS_NUM = 10
+    AUTHORS_NUM = 5
     BOOKS_NUM = 5
     CLIPS_NUM = 5
     clip_types_list = ['Highlight', 'Bookmark', 'Note']
