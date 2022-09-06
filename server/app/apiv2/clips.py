@@ -28,7 +28,8 @@ def get_author_clips(author_id):
 
 @apiv2.route('/authors/<int:author_id>/clips/<int:clip_id>')
 def get_author_clip(author_id, clip_id):
-    pass
+    clip = Clip.query.filter_by(author_id=author_id, id=clip_id).first()
+    return jsonify(clip.to_json_v2())
 
 @apiv2.route('/books/<int:book_id>/clips')
 def get_book_clips(book_id):
@@ -53,3 +54,8 @@ def get_book_clips(book_id):
         'count': pagination.total,
         'clips': clips_list
     })
+
+@apiv2.route('/books/<int:book_id>/clips/<int:clip_id>')
+def get_book_clip(book_id, clip_id):
+    clip = Clip.query.filter_by(book_id=book_id, id=clip_id).first()
+    return jsonify(clip.to_json_v2())

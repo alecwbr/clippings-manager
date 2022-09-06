@@ -28,7 +28,8 @@ def get_books():
 
 @apiv2.route('/books/<int:book_id>')
 def get_book(book_id):
-    pass
+    book = Book.query.get(book_id)
+    return jsonify(book.to_json())
 
 @apiv2.route('/authors/<int:author_id>/books')
 def get_author_books(author_id):
