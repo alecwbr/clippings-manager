@@ -32,4 +32,24 @@ def get_author_clip(author_id, clip_id):
 
 @apiv2.route('/books/<int:book_id>/clips')
 def get_book_clips(book_id):
-    pass
+    page = request.args.get('page', 1, type=int)
+    pagination = Clip.query.filter_by(book_id=book_id).paginate(
+        page, per_page=current_app.config['CLIPS_PER_PAGE'], error_out=False
+    )
+    clips = pagination.items
+    prev_p = url_for('.get_book_clips', _external=True, book_id=book_id, page=page-1) if pagination.has_prev else None
+    next_p = url_for('.get_book_clips', _external=True, book_id=book_id, page=page+1) if pagination.has_next else None
+
+    clips_list = []
+    for clip in clips:
+        clips_list.append(clip.to_json_v2())
+
+    return jsonify({
+        '_links': {
+            'self': { 'href': url_for('.get_book_clips', _external=True, book_id=book_id, page=page) },
+            'prev': { 'href': prev_p },
+            'next': { 'href': next_p }
+        },
+        'count': pagination.total,
+        'clips': clips_list
+    })
