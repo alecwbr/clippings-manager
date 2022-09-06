@@ -12,4 +12,5 @@ def test_root_object_has_keys(client, endpoint):
 def test_clips_object_has_keys(client, endpoint):
     with client:
         response = client.get(endpoint)
-        assert {'_links', 'id', 'clip_type', 'location', 'date', 'highlight', 'author_id', 'author_name', 'book_id', 'book_name'}.issubset(response.json['clips'][0])
+        assert {'_links', 'id', 'clip_type', 'location', 'date', 'highlight',
+                'author_id', 'author_name', 'book_id', 'book_name'}.issubset(response.json['clips'][0])
