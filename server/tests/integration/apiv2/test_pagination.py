@@ -1,6 +1,11 @@
 import pytest
 
-endpoints_list = ['/api/v2/authors', '/api/v2/books', '/api/v2/authors/1/books', '/api/v2/authors/1/clips']
+endpoints_list = ['/api/v2/authors',
+                  '/api/v2/books',
+                  '/api/v2/authors/1/books', 
+                  '/api/v2/authors/1/clips',
+                  '/api/v2/books/1/clips'
+                 ]
 
 @pytest.mark.parametrize('endpoint', endpoints_list)
 def test_pagination_links_self_json(client, endpoint):
