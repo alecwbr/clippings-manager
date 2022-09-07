@@ -2,7 +2,7 @@ import re
 import itertools
 from datetime import datetime, timezone
 from dataclasses import dataclass
-from typing import List
+from typing import List, Iterator
 
 class ParsingError(Exception):
     pass
@@ -17,11 +17,11 @@ class ParsedClip:
     highlight: str
 
 class ClippingsParser():
-    parsed_clips: List[ParsedClip]
+    parsed_clips: Iterator[ParsedClip]
 
     def __init__(self, my_clippings_file):
         self.__my_clippings_file = my_clippings_file
-        self.parsed_clips = []
+        self.parsed_clips = None
 
     def _parse_clip_title(self, clip: ParsedClip) -> str:
         self.__clean_title_author = clip[0].lstrip("\ufeff").rstrip()
@@ -62,19 +62,20 @@ class ClippingsParser():
     def _parse_clip_highlight(self, clip: ParsedClip) -> str:
         return clip[3].rstrip() 
 
-    def get_clips(self) -> List[ParsedClip]:
-        book_clips = []
-        
+    def _parse_file(self):
+        with open(self.__my_clippings_file) as f:
+            for key, group in itertools.groupby(f, lambda line: line.startswith('==========')):
+                if not key:
+                    yield list(group)
+
+    def get_clips(self) -> Iterator[ParsedClip]:
         with open(self.__my_clippings_file) as f:
             for i, line in enumerate(f, 1):
                 if i % 5 == 0:
                     if not line.startswith('=========='):
                         raise ParsingError('Not a valid Clippings file')
 
-        with open(self.__my_clippings_file) as f:
-            for key, group in itertools.groupby(f, lambda line: line.startswith('==========')):
-                if not key:
-                    book_clips.append(list(group))
+        book_clips = self._parse_file()
 
         for clip in book_clips:
             title = self._parse_clip_title(clip)
@@ -85,6 +86,4 @@ class ClippingsParser():
             highlight = self._parse_clip_highlight(clip)
 
             parsed_clip = ParsedClip(book_title=title, author=author, clip_type=clip_type, date=date, location=location, highlight=highlight)
-            self.parsed_clips.append(parsed_clip)
-        
-        return self.parsed_clips
+            yield parsed_clip
