@@ -3,6 +3,10 @@ from .. import db
 from ..models import Clip
 from flask import jsonify, url_for, request, current_app
 
+@apiv2.route('/clips')
+def get_clips():
+    pass
+
 @apiv2.route('/authors/<int:author_id>/clips')
 def get_author_clips(author_id):
     page = request.args.get('page', 1, type=int)
