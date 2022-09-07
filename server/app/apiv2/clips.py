@@ -18,7 +18,8 @@ def get_author_clips(author_id):
     
     clip_list = []
     for clip in clips:
-        clip_list.append(clip.to_json_v2())
+        self_href = url_for('.get_author_clip', _external=True, author_id=author_id, clip_id=clip.id)
+        clip_list.append(clip.to_json_v2(self_href=self_href))
 
     return jsonify({
         '_links': {
@@ -33,7 +34,8 @@ def get_author_clips(author_id):
 @apiv2.route('/authors/<int:author_id>/clips/<int:clip_id>')
 def get_author_clip(author_id, clip_id):
     clip = Clip.query.filter_by(author_id=author_id, id=clip_id).first()
-    return jsonify(clip.to_json_v2())
+    self_href = url_for('.get_author_clip', _external=True, author_id=author_id, clip_id=clip_id)
+    return jsonify(clip.to_json_v2(self_href=self_href))
 
 @apiv2.route('/books/<int:book_id>/clips')
 def get_book_clips(book_id):
@@ -47,7 +49,8 @@ def get_book_clips(book_id):
 
     clips_list = []
     for clip in clips:
-        clips_list.append(clip.to_json_v2())
+        self_href = url_for('.get_book_clip', _external=True, book_id=book_id, clip_id=clip.id)
+        clips_list.append(clip.to_json_v2(self_href=self_href))
 
     return jsonify({
         '_links': {
@@ -62,4 +65,5 @@ def get_book_clips(book_id):
 @apiv2.route('/books/<int:book_id>/clips/<int:clip_id>')
 def get_book_clip(book_id, clip_id):
     clip = Clip.query.filter_by(book_id=book_id, id=clip_id).first()
-    return jsonify(clip.to_json_v2())
+    self_href = url_for('.get_book_clip', _external=True, book_id=book_id, clip_id=clip_id)
+    return jsonify(clip.to_json_v2(self_href=self_href))
