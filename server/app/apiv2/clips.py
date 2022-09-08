@@ -30,7 +30,9 @@ def get_clips():
 
 @apiv2.route('/clips/<int:clip_id>')
 def get_clip(clip_id):
-    pass
+    clip = Clip.query.get(clip_id)
+    self_href = url_for('.get_clip', _external=True, clip_id=clip.id)
+    return jsonify(clip.to_json_v2(self_href=self_href))
 
 @apiv2.route('/authors/<int:author_id>/clips')
 def get_author_clips(author_id):
