@@ -5,6 +5,31 @@ from flask import jsonify, url_for, request, current_app
 
 @apiv2.route('/clips')
 def get_clips():
+    page = request.args.get('page', 1, type=int)
+    pagination = Clip.query.paginate(
+        page, per_page=current_app.config['CLIPS_PER_PAGE'], error_out=False
+    )
+    clips = pagination.items
+    prev_p = url_for('.get_clips', _external=True, page=page-1) if pagination.has_prev else None
+    next_p = url_for('.get_clips', _external=True, page=page+1) if pagination.has_next else None
+
+    clip_list = []
+    for clip in clips:
+        self_href = url_for('.get_clip', _external=True, clip_id=clip.id)
+        clip_list.append(clip.to_json_v2(self_href=self_href))
+
+    return jsonify({
+        '_links': {
+            'self': { 'href': url_for('.get_clips', _external=True, page=page) },
+            'prev': { 'href': prev_p },
+            'next': { 'href': next_p }
+        },
+        'count': pagination.total,
+        'clips': clip_list
+    })
+
+@apiv2.route('/clips/<int:clip_id>')
+def get_clip(clip_id):
     pass
 
 @apiv2.route('/authors/<int:author_id>/clips')

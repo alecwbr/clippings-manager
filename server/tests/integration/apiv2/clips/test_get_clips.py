@@ -1,6 +1,6 @@
 import pytest
 
-endpoints_list = ['/api/v2/authors/1/clips', '/api/v2/books/1/clips']
+endpoints_list = ['/api/v2/authors/1/clips', '/api/v2/books/1/clips', '/api/v2/clips']
 
 @pytest.mark.parametrize('endpoint', endpoints_list)
 def test_root_object_has_keys(client, endpoint):
