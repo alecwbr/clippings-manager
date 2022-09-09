@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from app import create_app, db
 from unittest import mock
 from clippings_parser import ClippingsParser
-from app.models import Author, Clip, Book
+from app.models import Author, Clip, Book, Tag
+import pdb
 
 MOCK_FILE_CONTENT = '''Test Book (Fake Author)
 - Your Highlight on Location 1337 | Added on Saturday, August 20, 2022 2:05:00 AM
@@ -65,7 +66,7 @@ def fake_data_list(faker):
                 fake_data = FakerData(author=author, title=book_title, location=location, clip_type=clip_type, highlight=highlight, date_time=date_time)
                 data.append(fake_data)
 
-    random.shuffle(data)
+    # random.shuffle(data)
     yield data
     del data
 
@@ -98,26 +99,38 @@ def parsed_clips(mock_file_handle):
     return parser.get_clips()
 
 @pytest.fixture
-def app(parsed_clips):
+def app(parsed_clips, faker):
     app = create_app('testing')
     with app.app_context():
         db.drop_all()
         db.create_all()
 
+        tags_list = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
+        tags_list_index = 0
         for clip in parsed_clips:
-            new_clip = Clip(clip_type=clip.clip_type, location=clip.location, date=clip.date, highlight=clip.highlight) 
+            if tags_list_index >= 5:
+                tags_list_index = 0
+            new_clip = Clip(clip_type=clip.clip_type, location=clip.location, date=clip.date, highlight=clip.highlight)
+            new_tag = tags_list[tags_list_index]
             author = Author.query.filter_by(name=clip.author).first()
             book = Book.query.filter_by(name=clip.book_title).first()
+            tag = Tag.query.filter_by(name=new_tag).first()
             if author is None:
                 author = Author(name=clip.author)
 
             if book is None:
                 book = Book(name=clip.book_title)
 
+            if tag is None:
+                tag = Tag(name=new_tag)
+
+            new_clip.tags.append(tag)
             book.clips.append(new_clip)
             author.books.append(book)
             author.clips.append(new_clip)
             db.session.add(author)
+
+            tags_list_index += 1
 
         db.session.commit()
     yield app

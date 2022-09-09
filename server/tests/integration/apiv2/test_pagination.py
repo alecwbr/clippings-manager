@@ -5,7 +5,8 @@ endpoints_list = ['/api/v2/authors',
                   '/api/v2/clips',
                   '/api/v2/authors/1/books', 
                   '/api/v2/authors/1/clips',
-                  '/api/v2/books/1/clips'
+                  '/api/v2/books/1/clips',
+                  '/api/v2/tags/1/clips'
                  ]
 
 @pytest.mark.parametrize('endpoint', endpoints_list)

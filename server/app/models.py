@@ -16,6 +16,17 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
 
+    def to_json(self):
+        json_tag = {
+            '_links': {
+                'self': { 'href': url_for('apiv2.get_tag', _external=True, tag_id=self.id) },
+                'collections/clips': { 'href': url_for('apiv2.get_tag_clips', _external=True, tag_id=self.id) }
+            },
+            'id': self.id,
+            'name': self.name
+        }
+        return json_tag
+
     def __repr__(self):
         return f'<Tag "{self.name}">'
 
@@ -38,7 +49,7 @@ class Clip(db.Model):
     highlight = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    tags = db.relationship('Tag', secondary=clip_tag, cascade='all, delete', backref='clips')
+    tags = db.relationship('Tag', secondary=clip_tag, cascade='all, delete', backref=db.backref('clips', lazy='dynamic'), lazy='dynamic')
 
     @property
     def date_str(self):
