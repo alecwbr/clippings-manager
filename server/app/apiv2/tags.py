@@ -46,3 +46,24 @@ def get_clip_tags(clip_id):
         'tags': tags_list
     }
     return jsonify(json_res)
+
+@apiv2.route('/clips/<int:clip_id>/tags', methods=['POST'])
+def create_clip_tag(clip_id):
+    tag_name = request.json.get('name')
+    clip = Clip.query.get(clip_id)
+    tag = Tag.query.filter_by(name=tag_name).first()
+    if tag is None:    
+        tag = Tag(name=tag_name)
+
+    clip.tags.append(tag)
+    db.session.add(clip)
+    db.session.commit()
+    tag = Tag.query.filter_by(name=tag_name).first()
+    json_res = {
+        '_links': {
+            'self': { 'href': url_for('.create_clip_tag', _external=True, clip_id=clip_id) }
+        },
+        'id': tag.id,
+        'name': tag.name
+    }
+    return jsonify(json_res)
