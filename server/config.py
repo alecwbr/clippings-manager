@@ -6,6 +6,7 @@ class Config:
     AUTHORS_PER_PAGE = 5
     BOOKS_PER_PAGE = 5
     CLIPS_PER_PAGE = 5
+    TAGS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):
