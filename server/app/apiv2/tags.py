@@ -61,7 +61,7 @@ def create_clip_tag(clip_id):
     tag = Tag.query.filter_by(name=tag_name).first()
     json_res = {
         '_links': {
-            'self': { 'href': url_for('.create_clip_tag', _external=True, clip_id=clip_id) }
+            'self': { 'href': url_for('.get_tag_clips', _external=True, tag_id=tag.id) }
         },
         'id': tag.id,
         'name': tag.name
