@@ -14,7 +14,7 @@ def test_clips_object_has_keys(client, endpoint):
         response = client.get(endpoint)
         assert {'_links', 'id', 'name'}.issubset(response.json['tags'][0])
 
-def test_clip_tag_value(client):
+def test_clip_tags_first_value(client):
     with client:
         response = client.get(endpoints_list[0])
         assert response.json['tags'][0]['name'] == 'tag1'
