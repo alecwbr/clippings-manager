@@ -1,6 +1,6 @@
 # clippings-manager
 
-A simple flask app that turns your `My Clippings.txt` into a convenient API. Still a WIP.
+A simple flask app that turns your `My Clippings.txt` from your Kindle into a convenient API. Still a WIP.
 
 ## Getting Started
 
