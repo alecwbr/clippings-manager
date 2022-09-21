@@ -1,6 +1,5 @@
 import sys
 from app import create_app, db
-from app.models import Tag, Clip, Author, Book
 
 def main():
     app = create_app('development')
