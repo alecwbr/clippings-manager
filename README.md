@@ -31,3 +31,5 @@ python load_file.py path/to/file.txt
 export FLASK_APP=clippings_manager.py
 flask run --no-debugger
 ```
+
+The API endpoints will be located at `http://127.0.0.1:5000/api/v2/`
